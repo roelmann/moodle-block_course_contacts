@@ -213,7 +213,15 @@ class block_course_contacts extends block_base {
                             $status = 'offline';
                         }
                         $content .= html_writer::start_tag('div', array('class' => 'name '.$status));
-                        $content .= $this->shorten_name($contact->firstname)." ".$this->shorten_name($contact->lastname);
+   
+                        // check block configuration for use_altname to determine the name to display
+                        if ($this->config->use_altname == 1 && $contact->alternatename != '') {
+                                $content .= $contact->alternatename;
+                        } else {
+                        //use first ane last names and truncate as necessary
+                                $content .= $this->shorten_name($contact->firstname)." ".$this->shorten_name($contact->lastname);
+                        }
+
                         $content .= html_writer::end_tag('div');
                         $content .= html_writer::empty_tag('img', array(
                             'src' => $OUTPUT->pix_url($status, 'block_course_contacts'),
