@@ -43,7 +43,8 @@ if (!$course) {
 }
 $SESSION->block_course_contacts_lastcourse = $course->id;
 require_login($course);
-$context = get_context_instance(CONTEXT_COURSE, $courseid);
+$context = context_course::instance($courseid);
+
 
 // Get the email address for our contact.
 if ($touid <= 0) {
@@ -80,8 +81,9 @@ if ($form->is_cancelled()) {
     $email = $data;
     $email->message = $email->message['text'];
     $result = false;
+
     if ($data->mailto == $mailto->email && $data->cid == $courseid) {
-        $result = email_to_user($mailto, $USER, $email->subject, strip_tags($email->message), $email->message);
+		$result = email_to_user($mailto, $USER, $email->subject, strip_tags($email->message), $email->message, NULL, NULL, NULL, $USER->email, NULL, NULL);
     } else {
         // debugging($data->mailto.' == '.$mailto->email);
         // debugging($data->cid.' == '.$courseid);
