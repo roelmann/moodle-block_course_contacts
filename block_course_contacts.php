@@ -216,7 +216,7 @@ class block_course_contacts extends block_base {
                         $content .= html_writer::start_tag('div', array('class' => 'name '.$status));
 
                         // check block configuration for use_altname to determine the name to display.
-                        if ($this->config->use_altname == 1 && $contact->alternatename != '') {
+                        if (!empty($this->config->use_altname) && $this->config->use_altname == 1 && $contact->alternatename != '') {
                                 $content .= $contact->alternatename;
                         } else {
                             // use first and last names and truncate as necessary.
