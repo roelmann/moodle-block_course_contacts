@@ -15,21 +15,36 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Block Course_Contacts version file.
+ * Privacy Subsystem for block_course_contacts.
  *
  * @package    block_course_contacts
- * @author     Mark Ward
- *             2016 Richard Oelmann
- * @copyright  Mark Ward
- * @credits    2016 R. Oelmann
- *
+ * @copyright  2018 Richard Oelmann
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+namespace block_course_contacts\privacy;
 defined('MOODLE_INTERNAL') || die();
 
-    $plugin->version = 2018051302;  // YYYYMMDDHH (year, month, day, 24-hr time).
-    $plugin->requires = 2015111604; // YYYYMMDDHH (This is the release version for Moodle 2.0).
-    $plugin->release = '3.5.0.2'; // Plugin release.
-    $plugin->maturity   = MATURITY_STABLE;
-    $plugin->component = 'block_course_contacts'; // Full name of the plugin (used for diagnostics).
+/**
+ * Privacy Subsystem for block_course_contacts implementing null_provider.
+ *
+ * @copyright  2018 onwards Richard Oelmann
+ * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ */
+class provider implements
+    // This plugin does not store any personal user data.
+    \core_privacy\local\metadata\null_provider {
+
+    // To provide php 5.6 (33_STABLE) and up support.
+    use \core_privacy\local\legacy_polyfill;
+
+    /**
+     * Get the language string identifier with the component's language
+     * file to explain why this plugin stores no data.
+     *
+     * @return  string
+     */
+    public static function _get_reason() {
+        return 'privacy:metadata';
+    }
+}

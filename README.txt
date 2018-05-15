@@ -15,6 +15,12 @@ The block also shows whether the user has been active in the last five minutes.
 
 Changelog
 **********
+v3.5.0.1 - Add Privacy API
+v3.2 - Add missing capability language strings (thanks SK-Unikent)
+       Add profile description as a display option
+v3.1 - Option to use Alternate name for display instead of truncated full name (Thanks mkpelletier)
+     - Font sizes of role name and text altered for consistency across other blocks
+     - Bug fixed to add capability (Thanks savva312)
 v3.0 - Minor updates to make the block work on Moodle3: minimal changes not reworked.
      - Code Checker edits
 v2.0 - Fixed compatibility with MS-SQL.
@@ -34,7 +40,7 @@ Maintainer
 **********
 The block has been written and is being maintained by Mark Ward for Burton &
 South Derbyshire College (UK).
-v3.0 - Contributions from Richard Oelmann
+v3.0/3.1 - Contributions from Richard Oelmann
 
 
 Many thanks to

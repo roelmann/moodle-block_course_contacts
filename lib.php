@@ -26,6 +26,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 function quickmail_format_time($time) {
     return date("l, d F Y, h:i A", $time);
 }
@@ -36,7 +38,7 @@ function quickmail_cleanup($table, $itemid) {
     // Clean up the files associated with this email.
     if ($courseid = $DB->get_field($table, 'courseid', array('id' => $itemid))) {
         $fs = get_file_storage();
-        $context = get_context_instance(CONTEXT_COURSE, $courseid);
+        $context = context_course::instance($courseid);
         $files = $fs->get_area_files($context->id, $table, 'attachment', $itemid, 'id');
         foreach ($files as $file) {
             $file->delete();
@@ -90,7 +92,7 @@ function quickmail_process_attachments($context, $email, $table, $id) {
 function quickmail_attachment_names($draft) {
     global $USER;
 
-    $usercontext = get_context_instance(CONTEXT_USER, $USER->id);
+    $usercontext = context_user::instance($USER->id);
 
     $fs = get_file_storage();
     $files = $fs->get_area_files($usercontext->id, 'user', 'draft', $draft, 'id');

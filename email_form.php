@@ -26,7 +26,9 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
 require_once($CFG->libdir . '/formslib.php');
+
 class simple_email_form extends moodleform {
     public function definition() {
         global $CFG, $USER, $COURSE, $OUTPUT;
@@ -36,7 +38,7 @@ class simple_email_form extends moodleform {
         $mailto = $this->_customdata['mailto'];
         $touid = $this->_customdata['touid'];
 
-        $context = get_context_instance(CONTEXT_COURSE, $COURSE->id);
+        $context = context_course::instance($COURSE->id);
 
         $mform->addElement('header', 'simpleemail_topsection',
         get_string('sendanemail', 'block_course_contacts'));

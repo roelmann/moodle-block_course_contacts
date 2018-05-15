@@ -57,7 +57,6 @@
 
 .block.block_course_contacts .content .ccard .info .name {
     text-transform: capitalize;
-    font-size: 1.2em;
     display: inline;
 }
 
@@ -72,6 +71,10 @@
     color: #444444;
     margin-top: 6px;
 }
+.block.block_course_contacts .content .ccard .info .description {
+    color: #444444;
+    margin-top: 6px;
+}
 
 .block.block_course_contacts .content .ccard .info .comms img {
     margin-right: 3px;
@@ -80,7 +83,6 @@
 
 div.cocoemailmsgs{
     text-align: center;
-    font-size: 1.5em;
 }
 
 div.cocoemailmsgs *{

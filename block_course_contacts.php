@@ -26,6 +26,8 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
+defined('MOODLE_INTERNAL') || die();
+
 class block_course_contacts extends block_base {
     public function init() {
         global $USER;
@@ -142,6 +144,7 @@ class block_course_contacts extends block_base {
             $this->config->email = 1;
             $this->config->message = 1;
             $this->config->phone = 0;
+            $this->config->description = 0;
         }
 
         $courseid = $this->page->course->id;
@@ -183,8 +186,8 @@ class block_course_contacts extends block_base {
             $inherit = $this->config->inherit;
         }
         $userfields = 'u.id,u.lastaccess,u.firstname,u.lastname,u.email,u.phone1,u.picture,u.imagealt,
-        u.firstnamephonetic,u.lastnamephonetic,u.middlename,u.alternatename';
-        // Debugging($context->id);
+        u.firstnamephonetic,u.lastnamephonetic,u.middlename,u.alternatename,u.description';
+
         foreach ($roles as $key => $role) {
             $att = 'role_'.$key;
             if (!empty($this->config->$att)) {
@@ -194,9 +197,9 @@ class block_course_contacts extends block_base {
                     // Because the role search finds the custom name and the proper name in brackets.
                     if (!empty($contacts)) {
                         if ($shortened = strstr($role, '(', true)) {
-                            $content .= html_writer::tag('h2', trim($shortened));
+                            $content .= html_writer::tag('h5', trim($shortened));
                         } else {
-                            $content .= html_writer::tag('h2', $role);
+                            $content .= html_writer::tag('h5', $role);
                         }
                     }
                     // Now display each contact.
@@ -206,25 +209,23 @@ class block_course_contacts extends block_base {
                         $content .= $OUTPUT->user_picture($contact, array('size' => 50));
                         $content .= html_writer::start_tag('div', array('class' => 'info'));
                         if ($contact->lastaccess > (time() - 300)) {
-                            // Online :)!
                             $status = 'online';
                         } else {
-                            // Offline :(!
                             $status = 'offline';
                         }
                         $content .= html_writer::start_tag('div', array('class' => 'name '.$status));
 
-                        // check block configuration for use_altname to determine the name to display.
-                        if ($this->config->use_altname == 1 && $contact->alternatename != '') {
+                        // Check block configuration for use_altname to determine the name to display.
+                        if (isset($this->config->use_altname) && $this->config->use_altname == 1 && $contact->alternatename != '') {
                                 $content .= $contact->alternatename;
                         } else {
-                            // use first and last names and truncate as necessary.
+                            // Use first and last names and truncate as necessary.
                                 $content .= $this->shorten_name($contact->firstname)." ".$this->shorten_name($contact->lastname);
                         }
 
                         $content .= html_writer::end_tag('div');
                         $content .= html_writer::empty_tag('img', array(
-                            'src' => $OUTPUT->pix_url($status, 'block_course_contacts'),
+                            'src' => $OUTPUT->image_url($status, 'block_course_contacts'),
                             'title' => get_string($status, 'block_course_contacts'),
                             'alt' => get_string($status, 'block_course_contacts'),
                             'class' => 'status'));
@@ -235,15 +236,9 @@ class block_course_contacts extends block_base {
                         if ($USER->id != $contact->id) {
                             // Should we display email?
                             if ($this->config->email == 1) {
-                                // RO - removed, causing errors, retained for dev
-                                // if ($CFG->block_co_co_simpleemail) {
-                                    // $url = new moodle_url('/blocks/course_contacts/email.php', array(
-                                        // 'touid' => $contact->id, 'cid'=>$COURSE->id));
-                                // } else {
-                                    $url = 'mailto:'.strtolower($contact->email);
-                                // }
+                                $url = 'mailto:'.strtolower($contact->email);
                                 $content .= html_writer::link($url, html_writer::empty_tag('img', array(
-                                    'src' => $OUTPUT->pix_url('mail', 'block_course_contacts'),
+                                    'src' => $OUTPUT->image_url('mail', 'block_course_contacts'),
                                     'title' => get_string('email', 'block_course_contacts').' '.$contact->firstname,
                                     'alt' => get_string('email', 'block_course_contacts').' '.$contact->firstname)),
                                     array('target' => '_blank'));
@@ -252,7 +247,7 @@ class block_course_contacts extends block_base {
                             if ($this->config->message == 1) {
                                 $url = new moodle_url('/message/index.php', array('id' => $contact->id));
                                 $content .= html_writer::link($url, html_writer::empty_tag('img', array(
-                                    'src' => $OUTPUT->pix_url('message', 'block_course_contacts'),
+                                    'src' => $OUTPUT->image_url('message', 'block_course_contacts'),
                                     'title' => get_string('message', 'block_course_contacts').' '.$contact->firstname,
                                     'alt' => get_string('message', 'block_course_contacts').' '.$contact->firstname)),
                                     array('target' => '_blank'));
@@ -261,7 +256,7 @@ class block_course_contacts extends block_base {
                             if ($this->config->phone == 1 && $contact->phone1 != "") {
                                 $url = 'tel:'.$contact->phone1;
                                 $content .= html_writer::link($url, html_writer::empty_tag('img', array(
-                                    'src' => $OUTPUT->pix_url('phone', 'block_course_contacts'),
+                                    'src' => $OUTPUT->image_url('phone', 'block_course_contacts'),
                                     'title' => get_string('phone', 'block_course_contacts').' '.$contact->phone1,
                                     'alt' => get_string('phone', 'block_course_contacts').' '.$contact->phone1)),
                                     array());
@@ -270,6 +265,11 @@ class block_course_contacts extends block_base {
 
                         $content .= html_writer::end_tag('div');
                         $content .= html_writer::end_tag('div');
+                        if ($this->config->description == 1 && $contact->description != "") {
+                            $content .= html_writer::start_tag('div', array('class' => 'description'));
+                            $content .= substr(format_text($contact->description, FORMAT_HTML), 0, 199);
+                            $content .= html_writer::end_tag('div');
+                        }
                         $content .= html_writer::end_tag('div');
                     }
                 }
