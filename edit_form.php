@@ -51,6 +51,29 @@ class block_course_contacts_edit_form extends block_edit_form {
         $mform->setDefault('config_description', 0);
         $mform->setType('config_description', PARAM_INTEGER);
 
+        // This section configures which contact methods should be displayed for guest users.
+        $mform->addElement('header', 'configheader', get_string('methodguest', 'block_course_contacts'));
+
+        $mform->addElement('selectyesno', 'config_hide_block_guest', get_string('hideblockforguest', 'block_course_contacts'));
+        $mform->setDefault('config_hide_block_guest', 1);
+        $mform->setType('config_hide_block_guest', PARAM_INT);
+
+        $mform->addElement('selectyesno', 'config_email_guest', get_string('email', 'block_course_contacts'));
+        $mform->setDefault('config_email_guest', 0);
+        $mform->setType('config_email_guest', PARAM_INT);
+
+        $mform->addElement('selectyesno', 'config_message_guest', get_string('message', 'block_course_contacts'));
+        $mform->setDefault('config_message_guest', 0);
+        $mform->setType('config_message_guest', PARAM_INT);
+
+        $mform->addElement('selectyesno', 'config_phone_guest', get_string('phone', 'block_course_contacts'));
+        $mform->setDefault('config_phone_guest', 0);
+        $mform->setType('config_phone_guest', PARAM_INT);
+
+        $mform->addElement('selectyesno', 'config_description_guest', get_string('description', 'block_course_contacts'));
+        $mform->setDefault('config_description_guest', 0);
+        $mform->setType('config_description_guest', PARAM_INT);
+
         // Second section gives options of how to display contacts.
         $mform->addElement('header', 'configheader', get_string('display', 'block_course_contacts'));
 
