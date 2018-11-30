@@ -188,11 +188,14 @@ class block_course_contacts extends block_base {
         $userfields = 'u.id,u.lastaccess,u.firstname,u.lastname,u.email,u.phone1,u.picture,u.imagealt,
         u.firstnamephonetic,u.lastnamephonetic,u.middlename,u.alternatename,u.description';
 
+        $currentgroup = groups_get_course_group($COURSE, true,false);
+        $content .= groups_print_course_menu($COURSE,new moodle_url('/course/view.php?id='.$courseid),true);    
+
         foreach ($roles as $key => $role) {
             $att = 'role_'.$key;
             if (!empty($this->config->$att)) {
                 if ($this->config->$att == 1) {
-                    $contacts = $this->get_role_users($key, $context, $inherit, $userfields, $orderby, null, '', '', 30);
+                    $contacts = $this->get_role_users($key, $context, $inherit, $userfields, $orderby, null, $currentgroup, '', 30);
 
                     // Because the role search finds the custom name and the proper name in brackets.
                     if (!empty($contacts)) {
