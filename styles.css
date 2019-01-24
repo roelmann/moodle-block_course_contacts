@@ -56,7 +56,6 @@
 }
 
 .block.block_course_contacts .content .ccard .info .name {
-    text-transform: capitalize;
     display: inline;
 }
 
