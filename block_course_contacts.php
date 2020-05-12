@@ -160,6 +160,9 @@ class block_course_contacts extends block_base {
 
         $courseid = $this->page->course->id;
         $context = $this->page->context;
+        if($context->contextlevel != 50) {
+            return;
+        }
         $isguest = is_guest($context);
 
         if ($isguest && $this->config->hide_block_guest) {
