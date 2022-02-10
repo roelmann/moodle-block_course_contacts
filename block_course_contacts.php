@@ -26,8 +26,6 @@
  * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Block Course Contacts class definition.
  *
@@ -160,7 +158,7 @@ class block_course_contacts extends block_base {
 
         $courseid = $this->page->course->id;
         $context = $this->page->context;
-        if($context->contextlevel != 50) {
+        if ($context->contextlevel != 50) {
             return;
         }
         $isguest = is_guest($context);
@@ -216,8 +214,8 @@ class block_course_contacts extends block_base {
             $att = 'role_'.$key;
             if (!empty($this->config->$att)) {
                 if ($this->config->$att == 1) {
-
-                    $contacts = $this->get_role_users($key, $context, $inherit, $userfields, $orderby, $currentgroup, '', 30);                    // Because the role search finds the custom name and the proper name in brackets.
+                    // Because the role search finds the custom name and the proper name in brackets.
+                    $contacts = $this->get_role_users($key, $context, $inherit, $userfields, $orderby, $currentgroup, '', 30);
 
                     if (!empty($contacts)) {
                         if ($shortened = strstr($role, '(', true)) {
@@ -247,7 +245,6 @@ class block_course_contacts extends block_base {
                                 $content .= $contact->alternatename;
                             } else {
                                 // Use first and last names and truncate as necessary.
-                                // $content .= $this->shorten_name($contact->firstname)." ".$this->shorten_name($contact->lastname);
                                 $content .= $contact->firstname." ".$contact->lastname;
                             }
 
@@ -302,7 +299,21 @@ class block_course_contacts extends block_base {
                                 || ($isguest && $this->config->description_guest == 1))) {
                                 $content .= html_writer::start_tag('div', array('class' => 'description'));
                                 $usercontext = context_user::instance($contact->id);
-                                $content .= substr(format_text(file_rewrite_pluginfile_urls($contact->description, 'pluginfile.php', $usercontext->id, 'user' ,'profile', null ), FORMAT_HTML), 0, 199);
+                                $content .= substr(
+                                    format_text(
+                                        file_rewrite_pluginfile_urls(
+                                            $contact->description,
+                                            'pluginfile.php',
+                                            $usercontext->id,
+                                            'user',
+                                            'profile',
+                                            null
+                                        ),
+                                        FORMAT_HTML
+                                    ),
+                                    0,
+                                    199
+                                );
                                 $content .= html_writer::end_tag('div');
                             }
                             $content .= html_writer::end_tag('div');
