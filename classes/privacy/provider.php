@@ -23,8 +23,6 @@
  */
 
 namespace block_course_contacts\privacy;
-defined('MOODLE_INTERNAL') || die();
-
 /**
  * Privacy Subsystem for block_course_contacts implementing null_provider.
  *
