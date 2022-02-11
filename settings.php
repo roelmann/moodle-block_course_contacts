@@ -15,21 +15,25 @@
 // along with Moodle.  If not, see <http://www.gnu.org/licenses/>.
 
 /**
- * Block Course_Contacts version file.
+ * Settings
  *
- * @package    block_course_contacts
- * @author     Mark Ward
- *             2020 Richard Oelmann
- * @copyright  Mark Ward
- * @copyright  2020 R. Oelmann
- *
- * @license    http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
+ * @package     block_course_contacts
+ * @author      Kevin Pham <kevinpham@catalyst-au.net>
+ * @copyright   Catalyst IT, 2022
+ * @license     http://www.gnu.org/copyleft/gpl.html GNU GPL v3 or later
  */
 
-defined('MOODLE_INTERNAL') || die();
+defined('MOODLE_INTERNAL') || die;
 
-$plugin->version = 2020050102;  // YYYYMMDDHH (year, month, day, 24-hr time).
-$plugin->requires = 2019052000; // YYYYMMDDHH (This is the release version for Moodle 2.0).
-$plugin->release = '3.9.0.1'; // Plugin release.
-$plugin->maturity   = MATURITY_STABLE;
-$plugin->component = 'block_course_contacts'; // Full name of the plugin (used for diagnostics).
+if ($ADMIN->fulltree) {
+
+    // Global setting to apply this for all relevant pages.
+    $settings->add(new admin_setting_configcheckbox(
+        'block_course_contacts/autocreateoninfopage',
+        get_string('settings:autocreateoninfopage', 'block_course_contacts'),
+        get_string('settings:autocreateoninfopage_help', 'block_course_contacts'),
+        0
+    ));
+
+    // TODO: Options to configure default instance options.
+}

@@ -326,4 +326,7 @@ class block_course_contacts extends block_base {
         return true;
     }
 
+    public function has_config() {
+        return true;
+    }
 }
