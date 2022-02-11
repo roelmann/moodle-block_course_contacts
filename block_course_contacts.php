@@ -205,8 +205,7 @@ class block_course_contacts extends block_base {
         if (isset($this->config->inherit)) {
             $inherit = $this->config->inherit;
         }
-        $userfields = 'u.id,u.lastaccess,u.firstname,u.lastname,u.email,u.phone1,u.picture,u.imagealt,
-        u.firstnamephonetic,u.lastnamephonetic,u.middlename,u.alternatename,u.description';
+        $userfields = user_picture::fields('u', ['lastaccess', 'phone1', 'description']);
 
         $currentgroup = groups_get_course_group($COURSE, true, false);
         $content .= groups_print_course_menu($COURSE, new moodle_url('/course/view.php?id='.$courseid), true);
